@@ -13,7 +13,6 @@ class Player extends React.Component {
         }
 
         this.interval = setInterval(() => {
-            console.log(this.interval)
             if (this.state.food === 0 && this.state.health > 0) {
                 this.subtractHealth()
             }
@@ -55,13 +54,26 @@ class Player extends React.Component {
             return
         }
         else {
-            this.setState(function (previousState, currentProps) {
-                return {
-                    food: previousState.food += 10,
-                    foodStorage: previousState.foodStorage -= 10
-                };
-            })
+            if (this.state.health !== 100) {
+                this.setState(function (previousState, currentProps) {
+                    return {
+                        food: previousState.food += 10,
+                        foodStorage: previousState.foodStorage -= 10,
+                        health: previousState.health += 10
+                    };
+                })
+            }
+            else {
+                this.setState(function (previousState, currentProps) {
+                    return {
+                        food: previousState.food += 10,
+                        foodStorage: previousState.foodStorage -= 10
+                    };
+                })
+                console.log("this is working")
+            }
         }
+
     }
 
     toExplore(e) {
