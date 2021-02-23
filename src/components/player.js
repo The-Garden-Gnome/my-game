@@ -1,17 +1,44 @@
 import React from 'react';
-
 class Player extends React.Component {
     constructor(props) {
         super(props)
 
         this.huntFood = this.huntFood.bind(this);
         this.eatFood = this.eatFood.bind(this);
+        this.toExplore = this.toExplore.bind(this);
         this.state = {
             health: 100,
             food: 50,
             foodStorage: 0,
-
         }
+
+        this.interval = setInterval(() => {
+            console.log(this.interval)
+            if (this.state.food === 0 && this.state.health > 0) {
+                this.subtractHealth()
+            }
+        }, 5000)
+
+    }
+
+    subtractHealth() {
+        this.setState(function (previousState, currentProps) {
+            return {
+                health: previousState.health -= 10
+            };
+        })
+    }
+
+    // componentDidUpdate() {
+    //     if (this.state.food === 0 && this.state.health > 0) {
+    //         setInterval(this.subtractHealth()), 5000;
+    //     }
+    // }
+
+
+    componentWillUnmount() {
+        console.log(this.interval)
+        clearInterval(this.interval)
     }
 
     huntFood(e) {
@@ -37,6 +64,19 @@ class Player extends React.Component {
         }
     }
 
+    toExplore(e) {
+        if (this.state.food === 0) {
+            return
+        }
+        else {
+            this.setState(function (previousState, currentProps) {
+                return {
+                    food: previousState.food -= 10,
+                };
+            })
+        }
+    }
+
     render() {
         return (
             <div className="Container" >
@@ -46,6 +86,8 @@ class Player extends React.Component {
                         onClick={this.huntFood}> Hunt </button>
                     <button
                         onClick={this.eatFood}> Eat </button>
+                    <button
+                        onClick={this.toExplore}> Explore </button>
                 </div>
             </div>
         )
